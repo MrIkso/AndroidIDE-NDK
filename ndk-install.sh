@@ -21,9 +21,9 @@ mv android-ndk-r24 $sdk_dir/ndk/24.0.8215888
 ln -s $ndk_dir/toolchains/llvm/prebuilt/linux-aarch64 $ndk_dir/toolchains/llvm/prebuilt/linux-x86_64
 ln -s $ndk_dir/prebuilt/linux-aarch64 $ndk_dir/prebuilt/linux-x86_64
 
-# pathing cmake config
+# patching cmake config
 sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' $ndk_dir/build/cmake/android-legacy.toolchain.cmake
-sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' $ndk_dir/build/cmake/android.toolchain.cmake.patch
+sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' $ndk_dir/build/cmake/android.toolchain.cmake
 
 # download cmake
 wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/cmake.zip
