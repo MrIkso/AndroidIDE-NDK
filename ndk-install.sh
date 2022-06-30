@@ -33,7 +33,6 @@ rm cmake.zip
 # set executable permission for cmake
 chmod -R +x $sdk_dir/cmake/3.23.1/bin
 # add cmake to path
-ideenv -s
-PATH=$PATH:$HOME/android-sdk/cmake/3.23.1/bin
+echo "PATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >> $SYSROOT/etc/ide-environment.properties
 
 echo 'Installation Finished. Ndk has been installed successfully!'
