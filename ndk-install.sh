@@ -35,4 +35,4 @@ chmod -R +x $sdk_dir/cmake/3.23.1/bin
 # add cmake to path
 echo -e "\nPATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >> $SYSROOT/etc/ide-environment.properties
 
-echo 'Installation Finished. Ndk has been installed successfully!'
+echo 'Installation Finished. Ndk has been installed successfully, please restart AndroidIDE!'
