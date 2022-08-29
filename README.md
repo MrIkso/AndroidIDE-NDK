@@ -1,6 +1,6 @@
 # AndroidIDE-NDK
 This bash script will install ndk r24 by [jzinferno](https://github.com/jzinferno) to  [AndroidIDE](https://github.com/itsaky/AndroidIDE) app.
-- Install NDK-r24 for install to [AndroidIDE](https://github.com/itsaky/AndroidIDE) in one command :
+- Install NDK r24 to [AndroidIDE](https://github.com/itsaky/AndroidIDE) in one command :
 ```
 cd && pkg up && pkg in wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh && chmod +x ndk-install.sh && ./ndk-install.sh
 ```
