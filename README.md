@@ -1,10 +1,11 @@
 # AndroidIDE-NDK
-This bash script will install ndk r24 by jzinferno to AndroidIDE app.
-- Install NDK-r24 for AndroidIDE in one command :
+This bash script will install ndk r24 by [jzinferno](https://github.com/jzinferno) to  [AndroidIDE](https://github.com/itsaky/AndroidIDE) app.
+- Install NDK-r24 for install to [AndroidIDE](https://github.com/itsaky/AndroidIDE) in one command :
 ```
 cd && pkg up && pkg in wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh && chmod +x ndk-install.sh && ./ndk-install.sh
 ```
-- Set ndkVersion in your build.gradle to ```ndkVersion "24.0.8215888"``` and set cmake version to ```version '3.23.1'```
+- Restart [AndroidIDE](https://github.com/itsaky/AndroidIDE)
+- Edit or set ```ndkVersion``` in your build.gradle to ```ndkVersion "24.0.8215888"``` and set cmake version to ```version '3.23.1'```
 
 Demo
 
@@ -51,4 +52,4 @@ dependencies {
 }
 ```
 
-Thanks to jzinferno and Lzhiyong
+Thanks to [jzinferno](https://github.com/jzinferno/termux-ndk) and [Lzhiyong](https://github.com/Lzhiyong)
