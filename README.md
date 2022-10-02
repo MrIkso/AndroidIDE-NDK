@@ -6,7 +6,7 @@ cd && pkg up && pkg in wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw
 ```
 - Restart [AndroidIDE](https://github.com/itsaky/AndroidIDE)
 - Edit or set ```ndkVersion``` in your build.gradle to ```ndkVersion "24.0.8215888"``` and set cmake version to ```version '3.23.1'```
-
+Warning Cmake work on Android 10+
 Demo
 
 ```
