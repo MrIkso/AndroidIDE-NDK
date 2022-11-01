@@ -10,7 +10,7 @@ echo 'Warning! This NDK only for aarch64'
 cd $install_dir
 # checking if previous installed NDK r24 and cmake 
 
-if [ -f "$ndk_dir" ]; then
+if [ -d "$ndk_dir" ]; then
     echo "$ndk_dir exists. Deleting NDK r24..."
     rm -rf $ndk_dir
 fi
