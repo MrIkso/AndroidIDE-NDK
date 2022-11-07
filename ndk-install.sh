@@ -9,7 +9,7 @@ ndk_dir=""
 ndk_ver=""
 ndk_ver_name=""
 ndk_installed=false
-cmake_instaled=false
+cmake_installed=false
 echo "Select with NDK version you need install?"
 
 select item in r17c r18b r19c r20b r21e r22b r23b r24 Quit
