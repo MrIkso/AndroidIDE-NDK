@@ -10,33 +10,63 @@ ndk_ver=""
 ndk_ver_name=""
 ndk_installed=false
 cmake_instaled=false
-echo "Select with NDK you need install?"
+echo "Select with NDK version you need install?"
 
-select item in r21e r24 Quit
+select item in r17c r18b r19c r20b r21e r22b r23b r24 Quit
 do
     case $item in
-        "r21e")
-            ndk_ver="21.4.7075529";
-            ndk_ver_name="r21e";
-            echo "Selected $ndk_ver_name ($ndk_ver)";
+        "r17c")
+            ndk_ver="17.2.4988734"
+            ndk_ver_name="r17c"
             break
-            ;;
-            
+        ;;
+        "r18b")
+            ndk_ver="18.1.5063045"
+            ndk_ver_name="r18b"
+            break
+        ;;
+        "r19c")
+            ndk_ver="19.2.5345600"
+            ndk_ver_name="r19c"
+            break
+        ;;
+        "r20b")
+            ndk_ver="20.1.5948944"
+            ndk_ver_name="r20b"
+            break
+        ;;
+        "r21e")
+            ndk_ver="21.4.7075529"
+            ndk_ver_name="r21e"
+            break
+        ;;
+        "r22b")
+            ndk_ver="22.1.7171670"
+            ndk_ver_name="r22b"
+            break
+        ;;
+        "r23b")
+            ndk_ver="23.2.8568313"
+            ndk_ver_name="r23b"
+            break
+        ;;
         "r24")
             ndk_ver="24.0.8215888";
             ndk_ver_name="r24";
-            echo "Selected $ndk_ver_name ($ndk_ver)";
-            break;;
+            break
+        ;;
             
         "Quit")
            echo "Exit.."
            exit
-           break;;
+        ;;
         *)
-           echo "Ooops";;
+           echo "Ooops"
+        ;;
     esac
 done
 
+echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
 echo 'Warning! This NDK only for aarch64'
 cd $install_dir
 # checking if previous installed NDK and cmake 
