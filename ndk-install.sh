@@ -88,7 +88,7 @@ fi
 
 # download NDK
 echo "Downloading NDK $ndk_ver_name"
-wget https://github.com/jzinferno/termux-ndk/releases/download/v1/android-ndk-$ndk_ver_name-aarch64.zip -q --progress=bar
+wget https://github.com/jzinferno/termux-ndk/releases/download/v1/android-ndk-$ndk_ver_name-aarch64.zip -q --show-progress
 echo "Unziping NDK $ndk_ver_name"
 
 if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
@@ -121,7 +121,7 @@ fi
 
 # download cmake
 echo "Downloading cmake..."
-wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/cmake.zip -q --progress=bar
+wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/cmake.zip -q  --show-progress
 
 # unzip cmake
 if [ -f "cmake.zip" ]; then
