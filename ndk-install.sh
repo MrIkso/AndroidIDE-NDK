@@ -88,8 +88,8 @@ fi
 
 # download NDK
 echo "Downloading NDK $ndk_ver_name"
-wget https://github.com/jzinferno/termux-ndk/releases/download/v1/android-ndk-$ndk_ver_name-aarch64.zip
-echo "Unziping NDK $ndk_ver_name" -q --progress=bar
+wget https://github.com/jzinferno/termux-ndk/releases/download/v1/android-ndk-$ndk_ver_name-aarch64.zip -q --progress=bar
+echo "Unziping NDK $ndk_ver_name"
 
 if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
 	unzip -qq android-ndk-$ndk_ver_name-aarch64.zip
