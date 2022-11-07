@@ -12,7 +12,7 @@ ndk_installed=false
 cmake_instaled=false
 echo "Select with NDK you need install?"
 
-select item in "r21e r24 Quit"
+select item in r21e r24 Quit
 do
     case $item in
         "r21e")
