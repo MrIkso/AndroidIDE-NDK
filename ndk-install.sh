@@ -4,6 +4,7 @@
 install_dir=$HOME
 sdk_dir=$install_dir/android-sdk
 cmake_dir=$sdk_dir/cmake
+ndk_base_dir=$sdk_dir/ndk
 
 ndk_dir=""
 ndk_ver=""
@@ -70,7 +71,7 @@ echo 'Warning! This NDK only for aarch64'
 cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
-ndk_dir="$sdk_dir/ndk/$ndk_ver"
+ndk_dir="$ndk_base_dir/$ndk_ver"
 
 if [ -d "$ndk_dir" ]; then
 	echo "$ndk_dir exists. Deleting NDK $ndk_ver..."
@@ -94,9 +95,15 @@ echo "Unziping NDK $ndk_ver_name"
 if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
 	unzip -qq android-ndk-$ndk_ver_name-aarch64.zip
 	rm android-ndk-$ndk_ver_name-aarch64.zip
-	# moving ndk to Android SDK directory
-	mkdir "$sdk_dir"/ndk
-	mv android-ndk-$ndk_ver_name "$ndk_dir"
+	
+	# moving NDK to Android SDK directory
+    if [ -d "$ndk_base_dir" ]; then
+	    mv android-ndk-$ndk_ver_name "$ndk_dir"
+    else
+		echo "NDK base dir does not exists. Creating..."
+		mkdir "$sdk_dir"/ndk
+	    mv android-ndk-$ndk_ver_name "$ndk_dir"
+	fi
 
 	# create missing link
 	if [ -d "$ndk_dir" ]; then
@@ -131,8 +138,10 @@ if [ -f "cmake.zip" ]; then
 	# set executable permission for cmake
 	chmod -R +x "$cmake_dir"/3.23.1/bin
 	# add cmake to path
-	echo "Adding cmake to path..."
-	echo -e "\nPATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >>"$SYSROOT"/etc/ide-environment.properties
+	# echo "Adding cmake to path..."
+	# echo -e "\nPATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >>"$SYSROOT"/etc/ide-environment.properties
+	# create link from 3.18.1 to 3.23.1
+	ln -s "$cmake_dir"/3.13.1 "$cmake_dir"/3.23.1
 	cmake_installed=true
 else
 	echo "cmake.zip does not exists."
