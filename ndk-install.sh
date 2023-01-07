@@ -140,9 +140,10 @@ if [ -f "cmake.zip" ]; then
 	# add cmake to path
 	# echo "Adding cmake to path..."
 	# echo -e "\nPATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >>"$SYSROOT"/etc/ide-environment.properties
-	# create link from 3.18.1 to 3.23.1
+	# create link from 3.18.1 and 3.10.2 to 3.23.1
 	cd $cmake_dir
 	ln -s 3.23.1 3.18.1
+        ln -s 3.23.1 3.10.2
 	cmake_installed=true
 else
 	echo "cmake.zip does not exists."
