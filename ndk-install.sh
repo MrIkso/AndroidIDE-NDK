@@ -82,7 +82,7 @@ fi
 
 if [ -d "$cmake_dir/3.23.1" ]; then
 	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"/3.23.1
+	rm -rf $cmake_dir
 else
 	echo "Cmake does not exists."
 fi
