@@ -95,14 +95,14 @@ echo "Unziping NDK $ndk_ver_name"
 if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
 	unzip -qq android-ndk-$ndk_ver_name-aarch64.zip
 	rm android-ndk-$ndk_ver_name-aarch64.zip
-	
+
 	# moving NDK to Android SDK directory
-    if [ -d "$ndk_base_dir" ]; then
-	    mv android-ndk-$ndk_ver_name "$ndk_dir"
-    else
+	if [ -d "$ndk_base_dir" ]; then
+		mv android-ndk-$ndk_ver_name "$ndk_dir"
+	else
 		echo "NDK base dir does not exists. Creating..."
 		mkdir "$sdk_dir"/ndk
-	    mv android-ndk-$ndk_ver_name "$ndk_dir"
+		mv android-ndk-$ndk_ver_name "$ndk_dir"
 	fi
 
 	# create missing link
