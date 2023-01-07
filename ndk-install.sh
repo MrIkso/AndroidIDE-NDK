@@ -9,6 +9,7 @@ ndk_base_dir=$sdk_dir/ndk
 ndk_dir=""
 ndk_ver=""
 ndk_ver_name=""
+ndk_file_name=""
 ndk_installed=false
 cmake_installed=false
 echo "Select with NDK version you need install?"
@@ -72,6 +73,7 @@ cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
 ndk_dir="$ndk_base_dir/$ndk_ver"
+ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
 
 if [ -d "$ndk_dir" ]; then
 	echo "$ndk_dir exists. Deleting NDK $ndk_ver..."
@@ -88,13 +90,13 @@ else
 fi
 
 # download NDK
-echo "Downloading NDK $ndk_ver_name"
-wget https://github.com/jzinferno/termux-ndk/releases/download/v1/android-ndk-$ndk_ver_name-aarch64.zip --no-verbose --show-progress -N
-echo "Unziping NDK $ndk_ver_name"
+echo "Downloading NDK $ndk_ver_name..."
+wget https://github.com/jzinferno/termux-ndk/releases/download/v1/$ndk_file_name --no-verbose --show-progress -N
 
-if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
-	unzip -qq android-ndk-$ndk_ver_name-aarch64.zip
-	rm android-ndk-$ndk_ver_name-aarch64.zip
+if [ -f "$ndk_file_name" ]; then
+    echo "Unziping NDK $ndk_ver_name..."
+	unzip -qq $ndk_file_name
+	rm $ndk_file_name
 
 	# moving NDK to Android SDK directory
 	if [ -d "$ndk_base_dir" ]; then
@@ -123,7 +125,7 @@ if [ -f "android-ndk-$ndk_ver_name-aarch64.zip" ]; then
 		echo "NDK does not exists."
 	fi
 else
-	echo "android-ndk-$ndk_ver_name-aarch64.zip does not exists."
+	echo "$ndk_file_namep does not exists."
 fi
 
 # download cmake
@@ -143,7 +145,7 @@ if [ -f "cmake.zip" ]; then
 	# create link from 3.18.1 and 3.10.2 to 3.23.1
 	cd $cmake_dir
 	ln -s 3.23.1 3.18.1
-        ln -s 3.23.1 3.10.2
+    ln -s 3.23.1 3.10.2
 	cmake_installed=true
 else
 	echo "cmake.zip does not exists."
