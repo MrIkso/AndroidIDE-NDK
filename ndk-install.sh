@@ -82,11 +82,19 @@ else
 	echo "NDK does not exists."
 fi
 
+if [ -d "$cmake_dir/3.10.1" ]; then
+	echo "$cmake_dir/3.10.1 exists. Deleting cmake..."
+	rm -rf "$cmake_dir/3.10.1"
+fi
+
+if [ -d "$cmake_dir/3.18.1" ]; then
+	echo "$cmake_dir/3.18.1 exists. Deleting cmake..."
+	rm -rf "$cmake_dir/3.18.1"
+fi
+
 if [ -d "$cmake_dir/3.23.1" ]; then
 	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-else
-	echo "Cmake does not exists."
+	rm -rf "$cmake_dir/3.23.1"
 fi
 
 # download NDK
@@ -145,7 +153,7 @@ if [ -f "cmake.zip" ]; then
 	# create link from 3.18.1 and 3.10.2 to 3.23.1
 	cd $cmake_dir
 	ln -s 3.23.1 3.18.1
-    ln -s 3.23.1 3.10.2
+        ln -s 3.23.1 3.10.2
 	cmake_installed=true
 else
 	echo "cmake.zip does not exists."
