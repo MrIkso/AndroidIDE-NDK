@@ -84,17 +84,17 @@ fi
 
 if [ -d "$cmake_dir/3.10.1" ]; then
 	echo "$cmake_dir/3.10.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir/3.10.1"
+	rm -rf "$cmake_dir"
 fi
 
 if [ -d "$cmake_dir/3.18.1" ]; then
 	echo "$cmake_dir/3.18.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir/3.18.1"
+	rm -rf "$cmake_dir"
 fi
 
 if [ -d "$cmake_dir/3.23.1" ]; then
 	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir/3.23.1"
+	rm -rf "$cmake_dir"
 fi
 
 # download NDK
