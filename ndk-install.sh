@@ -92,6 +92,11 @@ if [ -d "$cmake_dir/3.18.1" ]; then
 	rm -rf "$cmake_dir"
 fi
 
+if [ -d "$cmake_dir/3.22.1" ]; then
+	echo "$cmake_dir/3.22.1 exists. Deleting cmake..."
+	rm -rf "$cmake_dir"
+fi
+
 if [ -d "$cmake_dir/3.23.1" ]; then
 	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
 	rm -rf "$cmake_dir"
@@ -153,6 +158,7 @@ if [ -f "cmake.zip" ]; then
 	# create link from 3.18.1 and 3.10.2 to 3.23.1
 	cd $cmake_dir
 	ln -s 3.23.1 3.18.1
+        ln -s 3.23.1 3.22.1
         ln -s 3.23.1 3.10.2
 	cmake_installed=true
 else
