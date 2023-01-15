@@ -5,7 +5,7 @@ This bash script will install ndk r24 by [jzinferno](https://github.com/jzinfern
 cd && pkg upgrade && pkg install wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh --no-verbose --show-progress -N && chmod +x ndk-install.sh && bash ndk-install.sh
 ```
 - Restart [AndroidIDE](https://github.com/itsaky/AndroidIDE)
-- Edit or set ```ndkVersion``` in your build.gradle to ```ndkVersion "24.0.8215888"``` and set cmake version to ```version '3.23.1'```
+- Edit or set ```ndkVersion``` in your build.gradle to ```ndkVersion "24.0.8215888"```
 
 Warning Cmake work on Android 10+
 
@@ -17,14 +17,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
     buildToolsVersion "33.0.0"
     ndkVersion "24.0.8215888"
 
     defaultConfig {
         applicationId "com.myapplication"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
     }
@@ -44,7 +44,6 @@ android {
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
-            version '3.23.1'
         }
     }
 }
