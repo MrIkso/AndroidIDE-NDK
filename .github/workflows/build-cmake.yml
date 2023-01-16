@@ -1,0 +1,47 @@
+name: Build cmake + ninja
+
+on:
+  - workflow_dispatch
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      ANDROID_HOME: "/opt/termux/android-sdk"
+      NDK: "/opt/termux/android-ndk"
+
+    strategy:
+      matrix:
+        target_arch: [aarch64]
+      fail-fast: false
+
+    steps:
+
+      - name: Clone repository
+        uses: actions/checkout@v2
+       
+      - name: Get packages from termux-packages
+        uses: actions/checkout@v3
+        with:
+          repository: termux/termux-packages
+          path: termux-packages
+
+      - name: Add cmake-portable package
+        run: |
+          cp cmake-portable termux-packages/packages
+
+      - name: Build cmake-${{ matrix.target_arch }}
+        working-directory: ./termux-packages
+        run: ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I cmake-portable
+
+      - name: Build ninja-${{ matrix.target_arch }}
+        working-directory: ./termux-packages
+        run: ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
+
+      - name: Upload cmake-${{ matrix.target_arch }}
+        uses: actions/upload-artifact@v1
+        with:
+          name: cmake-${{ matrix.target_arch }}
+          path: termux-packages
