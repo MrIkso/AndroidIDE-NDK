@@ -6,7 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    inputs:
+      version:
+        description: 'CMake Version'
+        required: false
     env:
+      CMAKE_VERSION: ${{ github.event.inputs.version }}
       ANDROID_HOME: "/opt/termux/android-sdk"
       NDK: "/opt/termux/android-ndk"
 
@@ -43,9 +48,11 @@ jobs:
         run: |
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
+          cp LICENSE ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja
+          cp -r ./termux-packages/output/debs/data/data/com.termux/files/usr/ ./termux-packages/output/"$CMAKE_VERSION"
          
       - name: Upload cmake and ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
           name: cmake-${{ matrix.target_arch }}
-          path: ./termux-packages/output/debs/data/data/com.termux/files/usr/
+          path: ./termux-packages/output/"$CMAKE_VERSION"
