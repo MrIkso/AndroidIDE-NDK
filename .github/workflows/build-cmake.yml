@@ -32,7 +32,7 @@ jobs:
 
       - name: Add cmake-portable package
         run: |
-          sed -i 's/CMAKE_VER/$CMAKE_VERSION/g' cmake-portable/build.sh
+          sed -i "s/CMAKE_VER/$CMAKE_VERSION/g" cmake-portable/build.sh
           cp -r cmake-portable termux-packages/packages
 
       - name: Build cmake-${{ matrix.target_arch }}
