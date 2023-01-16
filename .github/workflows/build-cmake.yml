@@ -1,8 +1,8 @@
 name: Build cmake + ninja
 
 on:
-  - workflow_dispatch
-  inputs:
+  workflow_dispatch:
+    inputs:
       version:
         description: 'CMake Version'
         required: false
