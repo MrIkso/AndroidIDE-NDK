@@ -4,10 +4,8 @@ on:
   - workflow_dispatch
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
-
     env:
       ANDROID_HOME: "/opt/termux/android-sdk"
       NDK: "/opt/termux/android-ndk"
@@ -18,15 +16,15 @@ jobs:
       fail-fast: false
 
     steps:
-
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
        
       - name: Get packages from termux-packages
         uses: actions/checkout@v3
         with:
           repository: termux/termux-packages
           path: termux-packages
+          fetch-depth: 1
 
       - name: Add cmake-portable package
         run: |
@@ -40,8 +38,13 @@ jobs:
         working-directory: ./termux-packages
         run: ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
 
-      - name: Upload cmake-${{ matrix.target_arch }}
+      - name: Merge cmake and ninja
+        run: |
+           cd ./termux-packages/output
+           find -name "*.deb" -exec dpkg -x '{}' debs \;
+         
+      - name: Upload cmake+ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
           name: cmake-${{ matrix.target_arch }}
-          path: termux-packages
+          path: ./termux-packages/output/debs/data/data/com.termux/files/usr/
