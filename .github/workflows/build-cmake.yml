@@ -14,7 +14,9 @@ jobs:
       ANDROID_HOME: /opt/termux/android-sdk
       NDK: /opt/termux/android-ndk
       CMAKE_VERSION: ${{ github.event.inputs.version }}
-      
+      TERMUX_BASE_PREFIX: /data/data/com.itsaky.androidide/files
+      TERMUX_PREFIX: /data/data/com.itsaky.androidide/files/usr
+      TERMUX_HOME: /data/data/com.itsaky.androidide/files/home
     strategy:
       matrix:
         target_arch:
@@ -39,23 +41,23 @@ jobs:
       - name: Build cmake-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
-          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} cmake-portable
+          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I cmake-portable
 
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
-          sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" ./packages/ninja/build.sh
-          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} ninja
+      ##    sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" ./packages/ninja/build.sh
+          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
      
       - name: Merge CMake and Ninja
         run: |
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
           cd ./../../
-          cp --remove-destination ./termux-packages/LICENSE.md ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja/LICENSE
+          cp --remove-destination ./termux-packages/LICENSE.md ./termux-packages/output/debs/$TERMUX_PREFIX/share/doc/ninja/LICENSE
           cd ./termux-packages/output
           mkdir dist
-          cp -r debs/data/data/com.termux/files/usr/ dist/"$CMAKE_VERSION"
+          cp -r debs/$TERMUX_PREFIX dist/"$CMAKE_VERSION"
       
       - name: Upload artifact
         uses: actions/upload-artifact@v1
