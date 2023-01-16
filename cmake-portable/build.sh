@@ -6,14 +6,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=3.25.1
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://www.cmake.org/files/v${TERMUX_PKG_VERSION:0:4}/cmake-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=(SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM
-                   SKIP_CHECKSUM)
+
 TERMUX_PKG_DEPENDS="libarchive, libc++, libcurl, libexpat, jsoncpp, libuv, rhash, zlib"
 TERMUX_PKG_RECOMMENDS="clang, make"
 TERMUX_PKG_FORCE_CMAKE=true
