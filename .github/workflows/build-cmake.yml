@@ -31,11 +31,13 @@ jobs:
 
       - name: Build cmake-${{ matrix.target_arch }}
         working-directory: ./termux-packages
-        run: ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I cmake-portable
+        run:  | 
+          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I cmake-portable
 
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
-        run: ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
+        run: |
+          ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
 
       - name: Merge cmake and ninja
         run: |
