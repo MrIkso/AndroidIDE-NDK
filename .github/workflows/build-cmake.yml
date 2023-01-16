@@ -54,5 +54,5 @@ jobs:
       - name: Upload cmake and ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
-          name: cmake-${{ matrix.target_arch }}
-          path: ./termux-packages/output/"$CMAKE_VERSION"
+          name: cmake-$CMAKE_VERSION-${{ matrix.target_arch }}
+          path: ./termux-packages/output/$CMAKE_VERSION
