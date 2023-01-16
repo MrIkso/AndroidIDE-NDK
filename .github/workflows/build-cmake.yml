@@ -43,12 +43,14 @@ jobs:
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
+          sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" termux-packages/packages/ninja/build.sh
           ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
 
       - name: Merge cmake and ninja
         run: |
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
+          cp ./../../
           cp ./termux-packages/LICENSE.md ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja/LICENSE
           cp -r ./termux-packages/output/debs/data/data/com.termux/files/usr/ ./termux-packages/output/"$CMAKE_VERSION"
          
