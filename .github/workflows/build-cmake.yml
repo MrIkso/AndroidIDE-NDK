@@ -57,7 +57,7 @@ jobs:
           mkdir dist
           cp -r debs/data/data/com.termux/files/usr/ /dist/"$CMAKE_VERSION"
       
-      - name: Upload cmake-${{ env.CMAKE_VERSION }}-${{ matrix.target_arch }} and ninja-${{ matrix.target_arch }}
+      - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: cmake-${{ env.CMAKE_VERSION }}-${{ matrix.target_arch }}
