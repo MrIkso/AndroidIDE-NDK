@@ -11,7 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CMAKE_VERSION: ${{ github.event.inputs.version }}
       ANDROID_HOME: "/opt/termux/android-sdk"
       NDK: "/opt/termux/android-ndk"
 
@@ -31,6 +30,8 @@ jobs:
           path: termux-packages
 
       - name: Add cmake-portable package
+        env:
+          CMAKE_VERSION: ${{ github.event.inputs.version }}
         run: |
           cp -r cmake-portable termux-packages/packages
 
