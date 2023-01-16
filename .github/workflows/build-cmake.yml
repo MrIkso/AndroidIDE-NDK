@@ -46,7 +46,7 @@ jobs:
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
-      ##    sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" ./packages/ninja/build.sh
+          ##  sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" ./packages/ninja/build.sh
           ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
      
       - name: Merge CMake and Ninja
