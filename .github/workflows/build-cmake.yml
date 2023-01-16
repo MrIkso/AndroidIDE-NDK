@@ -49,7 +49,7 @@ jobs:
         run: |
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
-          cp LICENSE ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja
+          cp ./termux-packages/LICENSE.md ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja/LICENSE
           cp -r ./termux-packages/output/debs/data/data/com.termux/files/usr/ ./termux-packages/output/"$CMAKE_VERSION"
          
       - name: Upload cmake and ninja-${{ matrix.target_arch }}
