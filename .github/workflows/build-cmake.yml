@@ -24,7 +24,6 @@ jobs:
         with:
           repository: termux/termux-packages
           path: termux-packages
-          fetch-depth: 1
 
       - name: Add cmake-portable package
         run: |
@@ -40,10 +39,10 @@ jobs:
 
       - name: Merge cmake and ninja
         run: |
-           cd ./termux-packages/output
-           find -name "*.deb" -exec dpkg -x '{}' debs \;
+          cd ./termux-packages/output
+          find -name "*.deb" -exec dpkg -x '{}' debs \;
          
-      - name: Upload cmake+ninja-${{ matrix.target_arch }}
+      - name: Upload cmake and ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
           name: cmake-${{ matrix.target_arch }}
