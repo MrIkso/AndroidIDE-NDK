@@ -1,4 +1,4 @@
-name: Build cmake + ninja
+name: Build CMake + Ninja
 
 on:
   workflow_dispatch:
@@ -14,11 +14,13 @@ jobs:
       ANDROID_HOME: /opt/termux/android-sdk
       NDK: /opt/termux/android-ndk
       CMAKE_VERSION: ${{ github.event.inputs.version }}
+      
     strategy:
       matrix:
         target_arch:
           - aarch64
       fail-fast: false
+
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
@@ -38,13 +40,14 @@ jobs:
         working-directory: ./termux-packages
         run: |
           ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I cmake-portable
+
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
           sed -i "s/TERMUX_PKG_DEPENDS/TERMUX_PKG_BUILD_DEPENDS/g" ./packages/ninja/build.sh
           ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
      
-       - name: Merge cmake and ninja
+       - name: Merge CMake and Ninja
         run: |
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
@@ -54,7 +57,7 @@ jobs:
           mkdir dist
           cp -r debs/data/data/com.termux/files/usr/ /dist/"$CMAKE_VERSION"
       
-      - name: Upload cmake and ninja-${{ matrix.target_arch }}
+      - name: Upload cmake-${{ env.CMAKE_VERSION }}-${{ matrix.target_arch }} and ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
           name: cmake-${{ env.CMAKE_VERSION }}-${{ matrix.target_arch }}
