@@ -2,14 +2,14 @@ name: Build cmake + ninja
 
 on:
   - workflow_dispatch
+  inputs:
+      version:
+        description: 'CMake Version'
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    inputs:
-      version:
-        description: 'CMake Version'
-        required: false
     env:
       CMAKE_VERSION: ${{ github.event.inputs.version }}
       ANDROID_HOME: "/opt/termux/android-sdk"
