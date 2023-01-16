@@ -13,6 +13,7 @@ jobs:
     env:
       ANDROID_HOME: "/opt/termux/android-sdk"
       NDK: "/opt/termux/android-ndk"
+      CMAKE_VERSION: ${{ github.event.inputs.version }}
 
     strategy:
       matrix:
@@ -30,8 +31,6 @@ jobs:
           path: termux-packages
 
       - name: Add cmake-portable package
-        env:
-          CMAKE_VERSION: ${{ github.event.inputs.version }}
         run: |
           sed -i 's/CMAKE_VER/$CMAKE_VERSION/g' cmake-portable/build.sh
           cp -r cmake-portable termux-packages/packages
@@ -56,5 +55,5 @@ jobs:
       - name: Upload cmake and ninja-${{ matrix.target_arch }}
         uses: actions/upload-artifact@v1
         with:
-          name: cmake-$CMAKE_VERSION-${{ matrix.target_arch }}
-          path: ./termux-packages/output/$CMAKE_VERSION
+          name: cmake-${{ env.CMAKE_VERSION }}-${{ matrix.target_arch }}
+          path: ./termux-packages/output/${{ env.CMAKE_VERSION }}
