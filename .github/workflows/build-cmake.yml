@@ -54,10 +54,10 @@ jobs:
           cd ./termux-packages/output
           find -name "*.deb" -exec dpkg -x '{}' debs \;
           cd ./../../
-          cp --remove-destination ./termux-packages/LICENSE.md ./termux-packages/output/debs/$TERMUX_PREFIX/share/doc/ninja/LICENSE
+          cp --remove-destination ./termux-packages/LICENSE.md ./termux-packages/output/debs/data/data/com.termux/files/usr/share/doc/ninja/LICENSE
           cd ./termux-packages/output
           mkdir dist
-          cp -r debs/$TERMUX_PREFIX dist/"$CMAKE_VERSION"
+          cp -r debs/data/data/com.termux/files/usr/ dist/"$CMAKE_VERSION"
       
       - name: Upload artifact
         uses: actions/upload-artifact@v1
