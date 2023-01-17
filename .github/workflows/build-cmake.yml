@@ -14,9 +14,6 @@ jobs:
       ANDROID_HOME: /opt/termux/android-sdk
       NDK: /opt/termux/android-ndk
       CMAKE_VERSION: ${{ github.event.inputs.version }}
-      TERMUX_BASE_PREFIX: /data/data/com.itsaky.androidide/files
-      TERMUX_PREFIX: /data/data/com.itsaky.androidide/files/usr
-      TERMUX_HOME: /data/data/com.itsaky.androidide/files/home
     strategy:
       matrix:
         target_arch:
@@ -37,6 +34,8 @@ jobs:
         run: |
           sed -i "s/CMAKE_VER/$CMAKE_VERSION/g" cmake-portable/build.sh
           cp -r cmake-portable termux-packages/packages
+          rm termux-packages/packages/ninja/build.sh
+          cp ninja/build.sh termux-packages/packages/ninja/build.sh
 
       - name: Build cmake-${{ matrix.target_arch }}
         working-directory: ./termux-packages
@@ -46,8 +45,6 @@ jobs:
       - name: Build ninja-${{ matrix.target_arch }}
         working-directory: ./termux-packages
         run: |
-          rm ./packages/ninja/build.sh
-          cp ninja/build.sh ./packages/ninja/build.sh
           ./scripts/run-docker.sh ./build-package.sh -a ${{ matrix.target_arch }} -I ninja
      
       - name: Merge CMake and Ninja
