@@ -56,7 +56,7 @@ build(){
     cp ninja-1.11.1/build/release/ninja ${cmakeOutDir}/bin/ninja
     cd ${outDir}/out
     echo "Zipping distributive.."
-    7z a ${dirName}-${abi}.zip ${cmakeVersion}/
+    7z a ${dirName}-android-aarch64.zip ${cmakeVersion}/
 }
 
 yes | apt install p7zip
