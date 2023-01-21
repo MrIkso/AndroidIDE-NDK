@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Script to install NDK into AndroidIDE
+# Author MrIkso
+
 install_dir=$HOME
 sdk_dir=$install_dir/android-sdk
 cmake_dir=$sdk_dir/cmake
@@ -107,7 +109,7 @@ echo "Downloading NDK $ndk_ver_name..."
 wget https://github.com/jzinferno/termux-ndk/releases/download/v1/$ndk_file_name --no-verbose --show-progress -N
 
 if [ -f "$ndk_file_name" ]; then
-    echo "Unziping NDK $ndk_ver_name..."
+	echo "Unziping NDK $ndk_ver_name..."
 	unzip -qq $ndk_file_name
 	rm $ndk_file_name
 
@@ -141,28 +143,13 @@ else
 	echo "$ndk_file_namep does not exists."
 fi
 
-# download cmake
-echo "Downloading cmake..."
-wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/cmake.zip --no-verbose --show-progress -N
-
-# unzip cmake
-if [ -f "cmake.zip" ]; then
-	echo "Unziping cmake..."
-	unzip -qq cmake.zip -d "$sdk_dir"
-	rm cmake.zip
-	# set executable permission for cmake
-	chmod -R +x "$cmake_dir"/3.23.1/bin
-	# add cmake to path
-	# echo "Adding cmake to path..."
-	# echo -e "\nPATH=\$PATH:$HOME/android-sdk/cmake/3.23.1/bin" >>"$SYSROOT"/etc/ide-environment.properties
-	# create link from 3.18.1 and 3.10.2 to 3.23.1
-	cd $cmake_dir
-	ln -s 3.23.1 3.18.1
-        ln -s 3.23.1 3.22.1
-        ln -s 3.23.1 3.10.2
-	cmake_installed=true
+if [ -d "$cmake_dir" ]; then
+	cd "$cmake_dir"
+	run_install_cmake
 else
-	echo "cmake.zip does not exists."
+	mkdir -p "$cmake_dir"
+	cd "$cmake_dir"
+	run_install_cmake
 fi
 
 if [[ $ndk_installed == true && $cmake_installed == true ]]; then
@@ -170,3 +157,35 @@ if [[ $ndk_installed == true && $cmake_installed == true ]]; then
 else
 	echo 'NDK and cmake has been does not installed successfully!'
 fi
+
+run_install_cmake() {
+	download_cmake 3.10.2
+	download_cmake 3.18.1
+	download_cmake 3.22.1
+	download_cmake 3.25.1
+}
+
+download_cmake() {
+	# download cmake
+	cmake_version=$1
+	echo "Downloading cmake-$cmake_version..."
+	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
+	installing_cmake "$cmake_version"
+}
+
+installing_cmake() {
+	cmake_version=$1
+	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
+	# unzip cmake
+	if [ -f "$cmake_file" ]; then
+		echo "Unziping cmake..."
+		unzip -qq "$cmake_file" -d "$cmake_dir"
+		rm "$cmake_file"
+		# set executable permission for cmake
+		chmod -R +x "$cmake_dir"/"$cmake_version"/bin
+
+		cmake_installed=true
+	else
+		echo "$cmake_file does not exists."
+	fi
+}
