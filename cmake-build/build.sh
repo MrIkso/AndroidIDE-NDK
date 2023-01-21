@@ -21,7 +21,7 @@ build(){
     cd "${generationDir}"
     ${sdkRoot}/cmake/3.22.1/bin/cmake \
         -DCMAKE_GENERATOR=Ninja \
-        -DCMAKE_MAKE_PROGRAM=${sdkRoot}/cmake/3.23.1/bin/ninja \
+        -DCMAKE_MAKE_PROGRAM=${sdkRoot}/cmake/3.22.1/bin/ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_TOOLCHAIN_FILE=${ndkRoot}/build/cmake/android.toolchain.cmake \
         -DANDROID_ABI=${abi} \
@@ -36,7 +36,7 @@ build(){
         -DSPHINX_MAN=ON \
         ../..
        
-    ${sdkRoot}/cmake/3.23.1/bin/cmake  --build . --target all
+    ${sdkRoot}/cmake/3.22.1/bin/cmake  --build . --target all
     cd "${generationDir}"
     
     cmakeVersion=${dirName:6}

@@ -19,7 +19,7 @@ build(){
         -DCFLAGS=-fstack-protector-all \
         -DCXXFLAGS=-fstack-protector-all \
         -DCMAKE_GENERATOR=Ninja \
-        -DCMAKE_MAKE_PROGRAM=${sdkRoot}/cmake/3.23.1/bin/ninja \
+        -DCMAKE_MAKE_PROGRAM=${sdkRoot}/cmake/3.22.1/bin/ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_TOOLCHAIN_FILE=${ndkRoot}/build/cmake/android.toolchain.cmake \
         -DANDROID_ABI=${abi} \
