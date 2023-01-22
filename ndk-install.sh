@@ -14,6 +14,40 @@ ndk_ver_name=""
 ndk_file_name=""
 ndk_installed=false
 cmake_installed=false
+
+run_install_cmake() {
+	download_cmake 3.10.2
+	download_cmake 3.18.1
+	download_cmake 3.22.1
+	download_cmake 3.25.1
+}
+
+download_cmake() {
+	# download cmake
+	cmake_version=$1
+	echo "Downloading cmake-$cmake_version..."
+	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
+	installing_cmake "$cmake_version"
+}
+
+installing_cmake() {
+	cmake_version=$1
+	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
+	# unzip cmake
+	if [ -f "$cmake_file" ]; then
+		echo "Unziping cmake..."
+		unzip -qq "$cmake_file" -d "$cmake_dir"
+		rm "$cmake_file"
+		# set executable permission for cmake
+		chmod -R +x "$cmake_dir"/"$cmake_version"/bin
+
+		cmake_installed=true
+	else
+		echo "$cmake_file does not exists."
+	fi
+}
+
+
 echo "Select with NDK version you need install?"
 
 select item in r17c r18b r19c r20b r21e r22b r23b r24 Quit; do
@@ -157,35 +191,3 @@ if [[ $ndk_installed == true && $cmake_installed == true ]]; then
 else
 	echo 'NDK and cmake has been does not installed successfully!'
 fi
-
-run_install_cmake() {
-	download_cmake 3.10.2
-	download_cmake 3.18.1
-	download_cmake 3.22.1
-	download_cmake 3.25.1
-}
-
-download_cmake() {
-	# download cmake
-	cmake_version=$1
-	echo "Downloading cmake-$cmake_version..."
-	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
-	installing_cmake "$cmake_version"
-}
-
-installing_cmake() {
-	cmake_version=$1
-	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
-	# unzip cmake
-	if [ -f "$cmake_file" ]; then
-		echo "Unziping cmake..."
-		unzip -qq "$cmake_file" -d "$cmake_dir"
-		rm "$cmake_file"
-		# set executable permission for cmake
-		chmod -R +x "$cmake_dir"/"$cmake_version"/bin
-
-		cmake_installed=true
-	else
-		echo "$cmake_file does not exists."
-	fi
-}
