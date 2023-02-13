@@ -140,7 +140,7 @@ fi
 
 # download NDK
 echo "Downloading NDK $ndk_ver_name..."
-wget https://github.com/jzinferno/termux-ndk/releases/download/v1/$ndk_file_name --no-verbose --show-progress -N
+wget https://github.com/jzinferno2/termux-ndk/releases/download/v1/$ndk_file_name --no-verbose --show-progress -N
 
 if [ -f "$ndk_file_name" ]; then
 	echo "Unziping NDK $ndk_ver_name..."
