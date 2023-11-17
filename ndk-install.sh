@@ -124,7 +124,6 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b Quit; do
 		is_lzhiyong_ndk=true
 		break
 		;;
-
 	"Quit")
 		echo "Exit.."
 		exit
