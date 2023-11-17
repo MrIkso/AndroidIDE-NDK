@@ -14,6 +14,7 @@ ndk_ver_name=""
 ndk_file_name=""
 ndk_installed=false
 cmake_installed=false
+is_lzhiyong_ndk=false
 
 run_install_cmake() {
 	download_cmake 3.10.2
@@ -28,6 +29,32 @@ download_cmake() {
 	echo "Downloading cmake-$cmake_version..."
 	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
 	installing_cmake "$cmake_version"
+}
+
+download_ndk() {
+	# download NDK
+	echo "Downloading NDK $1..."
+	wget $2 --no-verbose --show-progress -N
+}
+
+fix_ndk() {
+	# create missing link
+	if [ -d "$ndk_dir" ]; then
+		echo "Creating missing links..."
+		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
+		ln -s linux-aarch64 linux-x86_64
+		cd "$ndk_dir"/prebuilt || exit
+		ln -s linux-aarch64 linux-x86_64
+		cd "$install_dir" || exit
+
+		# patching cmake config
+		echo "Patching cmake configs..."
+		sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' "$ndk_dir"/build/cmake/android-legacy.toolchain.cmake
+		sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' "$ndk_dir"/build/cmake/android.toolchain.cmake
+		ndk_installed=true
+	else
+		echo "NDK does not exists."
+	fi
 }
 
 installing_cmake() {
@@ -46,7 +73,6 @@ installing_cmake() {
 		echo "$cmake_file does not exists."
 	fi
 }
-
 
 echo "Select with NDK version you need install?"
 
@@ -90,6 +116,12 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 Quit; do
 	"r24")
 		ndk_ver="24.0.8215888"
 		ndk_ver_name="r24"
+		break
+		;;
+	"r26b")
+		ndk_ver="26.1.10909125"
+		ndk_ver_name="r26b"
+		is_lzhiyong_ndk=true
 		break
 		;;
 
@@ -138,9 +170,11 @@ if [ -d "$cmake_dir/3.23.1" ]; then
 	rm -rf "$cmake_dir"
 fi
 
-# download NDK
-echo "Downloading NDK $ndk_ver_name..."
-wget https://github.com/jzinferno2/termux-ndk/releases/download/v1/$ndk_file_name --no-verbose --show-progress -N
+if [[ $is_lzhiyong_ndk == true ]]; then
+	download_ndk "$ndk_file_name" "https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/$ndk_file_name"
+else
+	download_ndk "$ndk_file_name" "https://github.com/jzinferno2/termux-ndk/releases/download/v1/$ndk_file_name"
+fi
 
 if [ -f "$ndk_file_name" ]; then
 	echo "Unziping NDK $ndk_ver_name..."
@@ -156,25 +190,14 @@ if [ -f "$ndk_file_name" ]; then
 		mv android-ndk-$ndk_ver_name "$ndk_dir"
 	fi
 
-	# create missing link
-	if [ -d "$ndk_dir" ]; then
-		echo "Creating missing links..."
-		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
-		ln -s linux-aarch64 linux-x86_64
-		cd "$ndk_dir"/prebuilt || exit
-		ln -s linux-aarch64 linux-x86_64
-		cd "$install_dir" || exit
-
-		# patching cmake config
-		echo "Patching cmake configs..."
-		sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' "$ndk_dir"/build/cmake/android-legacy.toolchain.cmake
-		sed -i 's/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/if(CMAKE_HOST_SYSTEM_NAME STREQUAL Android)\nset(ANDROID_HOST_TAG linux-aarch64)\nelseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)/g' "$ndk_dir"/build/cmake/android.toolchain.cmake
-		ndk_installed=true
+	if [[ $is_lzhiyong_ndk==false ]]; then
+		fix_ndk
 	else
-		echo "NDK does not exists."
+		ndk_installed=true
 	fi
+
 else
-	echo "$ndk_file_namep does not exists."
+	echo "$ndk_file_name does not exists."
 fi
 
 if [ -d "$cmake_dir" ]; then
