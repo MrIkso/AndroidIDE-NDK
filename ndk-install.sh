@@ -76,7 +76,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -121,6 +121,12 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b Quit; do
 	"r26b")
 		ndk_ver="26.1.10909125"
 		ndk_ver_name="r26b"
+		is_lzhiyong_ndk=true
+		break
+		;;
+  	"r27b")
+		ndk_ver="27.1.12297006"
+		ndk_ver_name="r27b"
 		is_lzhiyong_ndk=true
 		break
 		;;
@@ -170,7 +176,7 @@ if [ -d "$cmake_dir/3.23.1" ]; then
 fi
 
 if [[ $is_lzhiyong_ndk == true ]]; then
-	download_ndk "$ndk_file_name" "https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/$ndk_file_name"
+	download_ndk "$ndk_file_name" "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/ndk/$ndk_file_name"
 else
 	download_ndk "$ndk_file_name" "https://github.com/jzinferno2/termux-ndk/releases/download/v1/$ndk_file_name"
 fi
