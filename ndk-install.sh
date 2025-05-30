@@ -15,6 +15,7 @@ ndk_file_name=""
 ndk_installed=false
 cmake_installed=false
 is_lzhiyong_ndk=false
+is_musl_ndk=false
 
 run_install_cmake() {
 	download_cmake 3.10.2
@@ -76,7 +77,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28 r28b r29-beta1 Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -130,6 +131,30 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b Quit; do
 		is_lzhiyong_ndk=true
 		break
 		;;
+  	"r27c")
+		ndk_ver="27.2.12479018"
+		ndk_ver_name="r27c"
+		is_musl_ndk=true
+		break
+		;;
+  	"r28")
+		ndk_ver="28.0.13004108"
+		ndk_ver_name="r28"
+		is_musl_ndk=true
+		break
+		;;
+  	"r28b")
+		ndk_ver="28.1.13356709"
+		ndk_ver_name="r28b"
+		is_musl_ndk=true
+		break
+		;;
+	"r29-beta1")
+		ndk_ver="29.0.13113456"
+		ndk_ver_name="r29-beta1"
+		is_musl_ndk=true
+		break
+		;;
 	"Quit")
 		echo "Exit.."
 		exit
@@ -146,7 +171,11 @@ cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
 ndk_dir="$ndk_base_dir/$ndk_ver"
-ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
+if [[ $is_musl_ndk == true ]]; then
+	ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+else
+	ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
+fi
 
 if [ -d "$ndk_dir" ]; then
 	echo "$ndk_dir exists. Deleting NDK $ndk_ver..."
@@ -175,7 +204,9 @@ if [ -d "$cmake_dir/3.23.1" ]; then
 	rm -rf "$cmake_dir"
 fi
 
-if [[ $is_lzhiyong_ndk == true ]]; then
+if [[ $is_musl_ndk == true ]]; then
+	download_ndk "$ndk_file_name" "https://github.com/HomuHomu833/android-ndk-custom/releases/download/$ndk_ver_name/$ndk_file_name"
+elif [[ $is_lzhiyong_ndk == true ]]; then
 	download_ndk "$ndk_file_name" "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/ndk/$ndk_file_name"
 else
 	download_ndk "$ndk_file_name" "https://github.com/jzinferno2/termux-ndk/releases/download/v1/$ndk_file_name"
@@ -183,7 +214,11 @@ fi
 
 if [ -f "$ndk_file_name" ]; then
 	echo "Unziping NDK $ndk_ver_name..."
-	unzip -qq $ndk_file_name
+	if [[ $is_musl_ndk == true ]]; then
+		tar --no-same-owner -xf "$ndk_file_name" --warning=no-unknown-keyword
+	else
+		unzip -qq "$ndk_file_name"
+	fi
 	rm $ndk_file_name
 
 	# moving NDK to Android SDK directory
