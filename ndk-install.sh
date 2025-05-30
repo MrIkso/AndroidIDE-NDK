@@ -58,6 +58,22 @@ fix_ndk() {
 	fi
 }
 
+fix_ndk_musl() {
+	# create missing link
+	if [ -d "$ndk_dir" ]; then
+		echo "Creating missing links..."
+		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
+		ln -s linux-aarch64 linux-arm64
+		cd "$ndk_dir"/prebuilt || exit
+		ln -s linux-aarch64 linux-arm64
+  		cd "$ndk_dir"/shader-tools || exit
+    		ln -s linux-aarch64 linux-arm64
+		ndk_installed=true
+	else
+		echo "NDK does not exists."
+	fi
+}
+
 installing_cmake() {
 	cmake_version=$1
 	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
@@ -230,10 +246,12 @@ if [ -f "$ndk_file_name" ]; then
 		mv android-ndk-$ndk_ver_name "$ndk_dir"
 	fi
 
-	if [[ $is_lzhiyong_ndk==false ]]; then
-		fix_ndk
+	if [[ $is_musl_ndk == true ]]; then
+    		fix_ndk_musl
+	elif [[ $is_lzhiyong_ndk == false ]]; then
+    		fix_ndk
 	else
-		ndk_installed=true
+    		ndk_installed=true
 	fi
 
 else
