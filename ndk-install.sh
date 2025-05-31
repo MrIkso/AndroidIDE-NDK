@@ -186,7 +186,7 @@ done
 
 arch=$(uname -m)
 
-if [[ "$is_musl_ndk" != "1" && "$is_armv7" == "1" ]]; then
+if [[ "$is_musl_ndk" == "false" && "$is_armv7" == "true" ]]; then
      echo "Only r27c and upper supported for ARM."
      exit 1
 fi
