@@ -16,7 +16,11 @@ ndk_installed=false
 cmake_installed=false
 is_lzhiyong_ndk=false
 is_musl_ndk=false
-is_armv7=false
+if [[ "$arch" == "armv8l" || "$arch" == "armv7l" || "$arch" == "armv7" ]]; then
+    is_armv7=true
+else
+    is_armv7=false
+fi
 
 run_install_cmake() {
 	download_cmake 3.10.2
@@ -61,14 +65,18 @@ fix_ndk() {
 
 fix_ndk_musl() {
 	# create missing link
+	if [ "$is_armv7" == "true" ]; then
+		ndk_arch="arm"
+	else
+		ndk_arch="arm64"
+	fi
 	if [ -d "$ndk_dir" ]; then
-		echo "Creating missing links..."
-		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
-		ln -s linux-arm64 linux-aarch64
-		cd "$ndk_dir"/prebuilt || exit
-		ln -s linux-arm64 linux-aarch64
-  		cd "$ndk_dir"/shader-tools || exit
-    		ln -s linux-arm64 linux-aarch64 
+		cd "$ndk_dir/toolchains/llvm/prebuilt" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
+		cd "$ndk_dir/prebuilt" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
+		cd "$ndk_dir/shader-tools" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
 		ndk_installed=true
 	else
 		echo "NDK does not exists."
@@ -177,12 +185,10 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 done
 
 arch=$(uname -m)
-if [[ "$arch" == "armv8l" || "$arch" == "armv7l" || "$arch" == "armv7" ]]; then
-    is_armv7=true
-    if [[ "$is_musl_ndk" != "1" ]]; then
-        echo "Only r27c and upper supported for ARM."
-        exit 1
-    fi
+
+if [[ "$is_musl_ndk" != "1" && "$is_armv7" == "1" ]]; then
+     echo "Only r27c and upper supported for ARM."
+     exit 1
 fi
 echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
 cd "$install_dir" || exit
