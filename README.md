@@ -3,8 +3,6 @@ This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/Andr
 
 ### How to install Ndk to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app).
 
-To install ndk to AndroidIDE, follow these steps:
-
 1. Download the NDK installation script:
 
    ```bash
