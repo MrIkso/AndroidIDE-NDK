@@ -16,6 +16,7 @@ ndk_installed=false
 cmake_installed=false
 is_lzhiyong_ndk=false
 is_musl_ndk=false
+is_armv7=false
 
 run_install_cmake() {
 	download_cmake 3.10.2
@@ -175,16 +176,27 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 	esac
 done
 
+arch=$(uname -m)
+if [[ "$arch" == "armv8l" || "$arch" == "armv7l" || "$arch" == "armv7" ]]; then
+    is_armv7=true
+    if [[ "$is_musl_ndk" != "1" ]]; then
+        echo "Only r27c and upper supported for ARM."
+        exit 1
+    fi
+fi
 echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
-echo 'Warning! This NDK only for aarch64'
 cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
 ndk_dir="$ndk_base_dir/$ndk_ver"
-if [[ $is_musl_ndk == true ]]; then
-	ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+if [[ "$is_musl_ndk" == true ]]; then
+    if [[ "$is_armv7" == true ]]; then
+        ndk_file_name="android-ndk-$ndk_ver_name-arm-linux-musleabihf.tar.xz"
+    else
+        ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+    fi
 else
-	ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
+    ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
 fi
 
 if [ -d "$ndk_dir" ]; then
