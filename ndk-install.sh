@@ -63,11 +63,11 @@ fix_ndk_musl() {
 	if [ -d "$ndk_dir" ]; then
 		echo "Creating missing links..."
 		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
-		ln -s linux-aarch64 linux-arm64
+		ln -s linux-arm64 linux-aarch64
 		cd "$ndk_dir"/prebuilt || exit
-		ln -s linux-aarch64 linux-arm64
+		ln -s linux-arm64 linux-aarch64
   		cd "$ndk_dir"/shader-tools || exit
-    		ln -s linux-aarch64 linux-arm64
+    		ln -s linux-arm64 linux-aarch64 
 		ndk_installed=true
 	else
 		echo "NDK does not exists."
