@@ -11,16 +11,16 @@ This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/Andr
 
 2. Choose your required NDK version from the list by entering the numbers provided and wait for the installation to complete.
 
-3. After installation, edit or set `ndkVersion` in your `build.gradle` file as follows:
+3. After installation, edit or set `ndkVersion` in your `build.gradle` or `build.gradle.kts` file as follows:
 
    - If you choose `r24`, set `ndkVersion` to `"24.0.8215888"`.
    - If you choose `r28b`, set `ndkVersion` to `"28.1.13356709"`.
    - If you choose `r29-beta1`, set `ndkVersion` to `"29.0.13113456"`.
 
 
-(You can find the downloaded ndk version names in AndroidIDE by running:
+(You can find the downloaded ndk version names by running:
 ```bash
-ls /data/data/com.itsaky.androidide/files/home/android-sdk/ndk
+ls $HOME/android-sdk/ndk
 ```
 
 (⚠️ Warning: CMake works on Android 10+ Only)
