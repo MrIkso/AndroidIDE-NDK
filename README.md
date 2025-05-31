@@ -1,11 +1,14 @@
 # AndroidIDE-NDK
-This bash script will install ndk `r24` by [jzinferno](https://github.com/jzinferno) and ndk `r28b`,`r29-beta` by [HomuHomu833](https://github.com/HomuHomu833) to  [AndroidIDE](https://github.com/itsaky/AndroidIDE) app.
-- Install NDK r24 to [AndroidIDE](https://github.com/itsaky/AndroidIDE) in one command :
+This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app).
+
+How to install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) or [Termux](https://github.com/termux/termux-app) in one command:
+
+- Copy and paste this commnad on terminal
 ```
 cd && pkg upgrade && pkg install wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh --no-verbose --show-progress -N && chmod +x ndk-install.sh && bash ndk-install.sh
 ```
-
-- Edit or set ```ndkVersion``` in your build.gradle to ```ndkVersion "24.0.8215888"```
+- Select NDK version with will you need install and wait it downloaded and unpacked
+- Edit or set ```ndkVersion``` in your build.gradle or build.gradle.kts to ```ndkVersion "<YOUR_NDK_VERSION>"```
 
 Warning CMake work on Android 10+
 
@@ -53,4 +56,7 @@ dependencies {
 }
 ```
 
-Thanks to [jzinferno](https://github.com/jzinferno/termux-ndk) and [Lzhiyong](https://github.com/Lzhiyong)
+Thanks to:
+- [x] [jzinferno](https://github.com/jzinferno/termux-ndk)
+- [x] [lzhiyong](https://github.com/lzhiyong/termux-ndk)
+- [x] [HomuHomu833](https://github.com/HomuHomu833/android-ndk-custom)
