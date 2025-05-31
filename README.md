@@ -20,9 +20,12 @@ To install ndk to AndroidIDE, follow these steps:
    - If you choose `r29-beta1`, set `ndkVersion` to `"29.0.13113456"`.
 
 
-(You can find the downloaded ndk version names in AndroidIDE by running: `ls /data/data/com.itsaky.androidide/files/home/android-sdk/ndk`)
+(You can find the downloaded ndk version names in AndroidIDE by running:
+```bash
+ls /data/data/com.itsaky.androidide/files/home/android-sdk/ndk
+```
 
-(⚠️Warning CMake work on Android 10+ Only)
+(⚠️ Warning: CMake works on Android 10+ Only)
 
 Example:
 
@@ -34,7 +37,7 @@ plugins {
 android {
     compileSdk 33
     buildToolsVersion "33.0.0"
-    ndkVersion "24.0.8215888"
+    ndkVersion "28.1.13356709"
 
     defaultConfig {
         applicationId "com.myapplication"
