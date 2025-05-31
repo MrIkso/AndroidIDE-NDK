@@ -1,18 +1,31 @@
 # AndroidIDE-NDK
 This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app).
 
-How to install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) or [Termux](https://github.com/termux/termux-app) in one command:
+### How to install Ndk to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app).
 
-- Copy and paste this commnad on terminal
+1. Download the NDK installation script:
+
+   ```bash
+   cd && pkg upgrade && pkg install wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh --no-verbose --show-progress -N && chmod +x ndk-install.sh && bash ndk-install.sh
+   ```
+
+2. Choose your required NDK version from the list by entering the numbers provided and wait for the installation to complete.
+
+3. After installation, edit or set `ndkVersion` in your `build.gradle` or `build.gradle.kts` file as follows:
+
+   - If you choose `r24`, set `ndkVersion` to `"24.0.8215888"`.
+   - If you choose `r28b`, set `ndkVersion` to `"28.1.13356709"`.
+   - If you choose `r29-beta1`, set `ndkVersion` to `"29.0.13113456"`.
+
+
+(You can find the downloaded ndk version names by running:
+```bash
+ls $HOME/android-sdk/ndk
 ```
-cd && pkg upgrade && pkg install wget && wget https://github.com/MrIkso/AndroidIDE-NDK/raw/main/ndk-install.sh --no-verbose --show-progress -N && chmod +x ndk-install.sh && bash ndk-install.sh
-```
-- Select NDK version with will you need install and wait it downloaded and unpacked
-- Edit or set ```ndkVersion``` in your build.gradle or build.gradle.kts to ```ndkVersion "<YOUR_NDK_VERSION>"```
 
-Warning CMake work on Android 10+
+(⚠️ Warning: CMake works on Android 10+ Only)
 
-Demo
+Example:
 
 ```
 plugins {
@@ -22,7 +35,7 @@ plugins {
 android {
     compileSdk 33
     buildToolsVersion "33.0.0"
-    ndkVersion "24.0.8215888"
+    ndkVersion "28.1.13356709"
 
     defaultConfig {
         applicationId "com.myapplication"
