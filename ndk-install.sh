@@ -25,7 +25,7 @@ fi
 run_install_cmake() {
         echo "Select with CMake version you need install?"
 	echo "Notice: Only 3.30.3 and upper supported for ARM."
-	select item in 3.10.2 3.18.1 3.22.1 3.25.1 3.30.3 3.30.4 3.30.5 3.31.0 3.31.1 3.31.4 3.31.5 3.31.6 4.0.2 Quit; do
+	select item in "3.10.2" "3.18.1" "3.22.1" "3.25.1" "3.30.3" "3.30.4" "3.30.5" "3.31.0" "3.31.1" "3.31.4" "3.31.5" "3.31.6" "4.0.2" Quit; do
  	case $item in
 		"3.10.2")
 			cmake_ver="3.10.2"
@@ -196,7 +196,7 @@ installing_cmake() {
         if [ -f "$cmake_file" ]; then
             tar --no-same-owner --warning=no-unknown-keyword -xf "$cmake_file"
             rm "$cmake_file"
-            mv "$cmake_version" "$cmake_dir/$cmake_version"
+            mv "$cmake_version" "$cmake_dir"
             chmod -R +x "$cmake_dir/$cmake_version/bin"
             cmake_installed=true
         else
@@ -207,7 +207,7 @@ installing_cmake() {
         if [ -f "$cmake_file" ]; then
             unzip -qq "$cmake_file"
             rm "$cmake_file"
-            mv "$cmake_version" "$cmake_dir/$cmake_version"
+            mv "$cmake_version" "$cmake_dir"
             chmod -R +x "$cmake_dir/$cmake_version/bin"
             cmake_installed=true
         else
