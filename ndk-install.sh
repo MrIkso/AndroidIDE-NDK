@@ -23,18 +23,39 @@ else
 fi
 
 run_install_cmake() {
-	download_cmake 3.10.2
-	download_cmake 3.18.1
-	download_cmake 3.22.1
-	download_cmake 3.25.1
+	download_cmake 3.10.2 false
+	download_cmake 3.18.1 false
+	download_cmake 3.22.1 false
+	download_cmake 3.25.1 false
+	download_cmake 3.30.3 true
+	download_cmake 3.30.4 true
+	download_cmake 3.30.5 true
+	download_cmake 3.31.0 true
+	download_cmake 3.31.1 true
+	download_cmake 3.31.4 true
+	download_cmake 3.31.5 true
+	download_cmake 3.31.6 true
+	download_cmake 4.0.2 true
 }
 
 download_cmake() {
-	# download cmake
-	cmake_version=$1
-	echo "Downloading cmake-$cmake_version..."
-	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
-	installing_cmake "$cmake_version"
+    cmake_version=$1
+    is_musl_cmake=$2
+
+    if [ "$is_musl_cmake" = true ]; then
+        if [ "$is_armv7" = true ]; then
+            wget "https://github.com/HomuHomu833/cmake-zig/releases/download/$cmake_version/cmake-arm-linux-musleabihf.tar.xz" \
+                --no-verbose --show-progress -N
+        else
+            wget "https://github.com/HomuHomu833/cmake-zig/releases/download/$cmake_version/cmake-aarch64-linux-musl.tar.xz" \
+                --no-verbose --show-progress -N
+        fi
+    else
+        wget "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-$cmake_version-android-aarch64.zip" \
+            --no-verbose --show-progress -N
+    fi
+
+    installing_cmake "$cmake_version" $2
 }
 
 download_ndk() {
@@ -84,20 +105,39 @@ fix_ndk_musl() {
 }
 
 installing_cmake() {
-	cmake_version=$1
-	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
-	# unzip cmake
-	if [ -f "$cmake_file" ]; then
-		echo "Unziping cmake..."
-		unzip -qq "$cmake_file" -d "$cmake_dir"
-		rm "$cmake_file"
-		# set executable permission for cmake
-		chmod -R +x "$cmake_dir"/"$cmake_version"/bin
+    cmake_version=$1
+    is_musl_cmake=$2
 
-		cmake_installed=true
-	else
-		echo "$cmake_file does not exists."
-	fi
+    echo "Unziping cmake..."
+
+    if [ "$is_musl_cmake" = true ]; then
+        if [ "$is_armv7" = true ]; then
+            cmake_file="cmake-arm-linux-musleabihf.tar.xz"
+        else
+            cmake_file="cmake-aarch64-linux-musl.tar.xz"
+        fi
+
+        if [ -f "$cmake_file" ]; then
+            tar --no-same-owner --warning=no-unknown-keyword -xf "$cmake_file"
+            rm "$cmake_file"
+            mv "$cmake_version" "$cmake_dir/$cmake_version"
+            chmod -R +x "$cmake_dir/$cmake_version/bin"
+            cmake_installed=true
+        else
+            echo "$cmake_file does not exists."
+        fi
+    else
+        cmake_file="cmake-$cmake_version-android-aarch64.zip"
+        if [ -f "$cmake_file" ]; then
+            unzip -qq "$cmake_file"
+            rm "$cmake_file"
+            mv "$cmake_version" "$cmake_dir/$cmake_version"
+            chmod -R +x "$cmake_dir/$cmake_version/bin"
+            cmake_installed=true
+        else
+            echo "$cmake_file does not exists."
+        fi
+    fi
 }
 
 echo "Select with NDK version you need install?"
