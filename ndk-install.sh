@@ -118,6 +118,8 @@ download_cmake() {
     cmake_version=$1
     is_musl_cmake=$2
 
+    echo "Downloading CMake $1..."
+
     if [ "$is_musl_cmake" = true ]; then
         if [ "$is_armv7" = true ]; then
             wget "https://github.com/HomuHomu833/cmake-zig/releases/download/$cmake_version/cmake-arm-linux-musleabihf.tar.xz" \
@@ -184,7 +186,7 @@ installing_cmake() {
     cmake_version=$1
     is_musl_cmake=$2
 
-    echo "Unziping cmake..."
+    echo "Unziping CMake $1..."
 
     if [ "$is_musl_cmake" = true ]; then
         if [ "$is_armv7" = true ]; then
