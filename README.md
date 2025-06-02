@@ -23,8 +23,6 @@ You can find the downloaded ndk version names by running:
 ls $HOME/android-sdk/ndk
 ```
 
-(⚠️ Warning: CMake works on Android 10+ Only)
-
 Example:
 
 ```

@@ -3,6 +3,8 @@
 # Script to install NDK into AndroidIDE
 # Author MrIkso
 
+arch=$(uname -m)
+
 install_dir=$HOME
 sdk_dir=$install_dir/android-sdk
 cmake_dir=$sdk_dir/cmake
@@ -16,20 +18,124 @@ ndk_installed=false
 cmake_installed=false
 is_lzhiyong_ndk=false
 is_musl_ndk=false
+if [[ "$arch" == "armv8l" || "$arch" == "armv7l" || "$arch" == "armv7" ]]; then
+    is_armv7=true
+else
+    is_armv7=false
+fi
 
 run_install_cmake() {
-	download_cmake 3.10.2
-	download_cmake 3.18.1
-	download_cmake 3.22.1
-	download_cmake 3.25.1
+        echo "Select with CMake version you need install?"
+	echo "Notice: Only 3.30.3 and upper supported for ARM."
+	select item in "3.10.2" "3.18.1" "3.22.1" "3.25.1" "3.30.3" "3.30.4" "3.30.5" "3.31.0" "3.31.1" "3.31.4" "3.31.5" "3.31.6" "4.0.2" Quit; do
+ 	case $item in
+		"3.10.2")
+			cmake_ver="3.10.2"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.18.1")
+			cmake_ver="3.18.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.22.1")
+			cmake_ver="3.22.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.25.1")
+			cmake_ver="3.25.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.30.3")
+			cmake_ver="3.30.3"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.30.4")
+			cmake_ver="3.30.4"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.30.5")
+			cmake_ver="3.30.5"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.31.0")
+			cmake_ver="3.31.0"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.31.1")
+			cmake_ver="3.31.1"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.4")
+			cmake_ver="3.31.4"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.5")
+			cmake_ver="3.31.5"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.6")
+			cmake_ver="3.31.6"
+   			is_musl_cmake=true
+			break
+			;;
+		"4.0.2")
+			cmake_ver="4.0.2"
+   			is_musl_cmake=true
+			break
+			;;
+		"Quit")
+			echo "Exit.."
+			exit
+			;;
+		*)
+			echo "Ooops"
+			;;
+		esac
+	done
+
+ 	echo "Selected this version $cmake_ver to install"
+  
+  	if [ -d "$cmake_dir/$cmake_ver" ]; then
+		echo "$cmake_ver exists. Deleting CMake $cmake_ver..."
+		rm -rf "$cmake_dir/$cmake_ver"
+	else
+		echo "CMake does not exists."
+	fi
+	
+	download_cmake $cmake_ver $is_musl_cmake
 }
 
 download_cmake() {
-	# download cmake
-	cmake_version=$1
-	echo "Downloading cmake-$cmake_version..."
-	wget https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-"$cmake_version"-android-aarch64.zip --no-verbose --show-progress -N
-	installing_cmake "$cmake_version"
+    cmake_version=$1
+    is_musl_cmake=$2
+
+    echo "Downloading CMake $1..."
+
+    if [ "$is_musl_cmake" = true ]; then
+        if [ "$is_armv7" = true ]; then
+            wget "https://github.com/HomuHomu833/cmake-zig/releases/download/$cmake_version/cmake-arm-linux-musleabihf.tar.xz" \
+                --no-verbose --show-progress -N
+        else
+            wget "https://github.com/HomuHomu833/cmake-zig/releases/download/$cmake_version/cmake-aarch64-linux-musl.tar.xz" \
+                --no-verbose --show-progress -N
+        fi
+    else
+        wget "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/cmake/cmake-$cmake_version-android-aarch64.zip" \
+            --no-verbose --show-progress -N
+    fi
+
+    installing_cmake "$cmake_version" $2
 }
 
 download_ndk() {
@@ -60,14 +166,18 @@ fix_ndk() {
 
 fix_ndk_musl() {
 	# create missing link
+	if [ "$is_armv7" == "true" ]; then
+		ndk_arch="arm"
+	else
+		ndk_arch="arm64"
+	fi
 	if [ -d "$ndk_dir" ]; then
-		echo "Creating missing links..."
-		cd "$ndk_dir"/toolchains/llvm/prebuilt || exit
-		ln -s linux-arm64 linux-aarch64
-		cd "$ndk_dir"/prebuilt || exit
-		ln -s linux-arm64 linux-aarch64
-  		cd "$ndk_dir"/shader-tools || exit
-    		ln -s linux-arm64 linux-aarch64 
+		cd "$ndk_dir/toolchains/llvm/prebuilt" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
+		cd "$ndk_dir/prebuilt" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
+		cd "$ndk_dir/shader-tools" || exit
+		ln -s "linux-$ndk_arch" linux-aarch64
 		ndk_installed=true
 	else
 		echo "NDK does not exists."
@@ -75,24 +185,41 @@ fix_ndk_musl() {
 }
 
 installing_cmake() {
-	cmake_version=$1
-	cmake_file=cmake-"$cmake_version"-android-aarch64.zip
-	# unzip cmake
-	if [ -f "$cmake_file" ]; then
-		echo "Unziping cmake..."
-		unzip -qq "$cmake_file" -d "$cmake_dir"
-		rm "$cmake_file"
-		# set executable permission for cmake
-		chmod -R +x "$cmake_dir"/"$cmake_version"/bin
+    cmake_version=$1
+    is_musl_cmake=$2
 
-		cmake_installed=true
-	else
-		echo "$cmake_file does not exists."
-	fi
+    echo "Unziping CMake $1..."
+
+    if [ "$is_musl_cmake" = true ]; then
+        if [ "$is_armv7" = true ]; then
+            cmake_file="cmake-arm-linux-musleabihf.tar.xz"
+        else
+            cmake_file="cmake-aarch64-linux-musl.tar.xz"
+        fi
+
+        if [ -f "$cmake_file" ]; then
+            tar --no-same-owner --warning=no-unknown-keyword -xf "$cmake_file"
+            rm "$cmake_file"
+            chmod -R +x "$cmake_dir/$cmake_version/bin"
+            cmake_installed=true
+        else
+            echo "$cmake_file does not exists."
+        fi
+    else
+        cmake_file="cmake-$cmake_version-android-aarch64.zip"
+        if [ -f "$cmake_file" ]; then
+            unzip -qq "$cmake_file"
+            rm "$cmake_file"
+            chmod -R +x "$cmake_dir/$cmake_version/bin"
+            cmake_installed=true
+        else
+            echo "$cmake_file does not exists."
+        fi
+    fi
 }
 
 echo "Select with NDK version you need install?"
-
+echo "Notice: Only r27c and upper supported for ARM."
 select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Quit; do
 	case $item in
 	"r17c")
@@ -176,15 +303,18 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 done
 
 echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
-echo 'Warning! This NDK only for aarch64'
 cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
 ndk_dir="$ndk_base_dir/$ndk_ver"
-if [[ $is_musl_ndk == true ]]; then
-	ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+if [[ "$is_musl_ndk" == true ]]; then
+    if [[ "$is_armv7" == true ]]; then
+        ndk_file_name="android-ndk-$ndk_ver_name-arm-linux-musleabihf.tar.xz"
+    else
+        ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+    fi
 else
-	ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
+    ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
 fi
 
 if [ -d "$ndk_dir" ]; then
@@ -192,26 +322,6 @@ if [ -d "$ndk_dir" ]; then
 	rm -rf "$ndk_dir"
 else
 	echo "NDK does not exists."
-fi
-
-if [ -d "$cmake_dir/3.10.1" ]; then
-	echo "$cmake_dir/3.10.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.18.1" ]; then
-	echo "$cmake_dir/3.18.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.22.1" ]; then
-	echo "$cmake_dir/3.22.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.23.1" ]; then
-	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
 fi
 
 if [[ $is_musl_ndk == true ]]; then
