@@ -23,19 +23,22 @@ else
 fi
 
 run_install_cmake() {
-	download_cmake 3.10.2 false
-	download_cmake 3.18.1 false
-	download_cmake 3.22.1 false
-	download_cmake 3.25.1 false
-	download_cmake 3.30.3 true
-	download_cmake 3.30.4 true
-	download_cmake 3.30.5 true
-	download_cmake 3.31.0 true
-	download_cmake 3.31.1 true
-	download_cmake 3.31.4 true
-	download_cmake 3.31.5 true
-	download_cmake 3.31.6 true
-	download_cmake 4.0.2 true
+        echo "Select with NDK version you need install?"
+	select item in 3.10.2 3.18.1 3.22.1 3.25.1 3.30.3 3.30.4 3.30.5 3.31.0 3.31.1 3.31.4 3.31.5 3.31.6 4.0.2 Quit; do
+	
+	download_cmake  false
+	download_cmake  false
+	download_cmake  false
+	download_cmake  false
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
+	download_cmake  true
 }
 
 download_cmake() {
