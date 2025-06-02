@@ -108,7 +108,7 @@ run_install_cmake() {
 		echo "$cmake_ver exists. Deleting CMake $cmake_ver..."
 		rm -rf "$cmake_dir/$cmake_ver"
 	else
-		echo "NDK does not exists."
+		echo "CMake does not exists."
 	fi
 	
 	download_cmake $cmake_ver $is_musl_cmake
@@ -218,7 +218,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 echo "Notice: Only r27c and upper supported for ARM."
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Skip Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -289,6 +289,17 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 		ndk_ver_name="r29-beta1"
 		is_musl_ndk=true
 		break
+		;;
+  	"Skip")
+		echo "Skiping.."
+		if [ -d "$cmake_dir" ]; then
+			cd "$cmake_dir"
+			run_install_cmake
+		else
+			mkdir -p "$cmake_dir"
+			cd "$cmake_dir"
+			run_install_cmake
+		fi
 		;;
 	"Quit")
 		echo "Exit.."
