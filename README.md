@@ -23,6 +23,8 @@ You can find the downloaded ndk version names by running:
 ls $HOME/android-sdk/ndk
 ```
 
+(⚠️ Warning: CMake 3.10.2-3.25.1 works on Android 10+ and AArch64 Only)
+
 Example:
 
 ```
