@@ -196,7 +196,6 @@ installing_cmake() {
         if [ -f "$cmake_file" ]; then
             tar --no-same-owner --warning=no-unknown-keyword -xf "$cmake_file"
             rm "$cmake_file"
-            mv "$cmake_version" "$cmake_dir"
             chmod -R +x "$cmake_dir/$cmake_version/bin"
             cmake_installed=true
         else
@@ -207,7 +206,6 @@ installing_cmake() {
         if [ -f "$cmake_file" ]; then
             unzip -qq "$cmake_file"
             rm "$cmake_file"
-            mv "$cmake_version" "$cmake_dir"
             chmod -R +x "$cmake_dir/$cmake_version/bin"
             cmake_installed=true
         else
@@ -218,7 +216,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 echo "Notice: Only r27c and upper supported for ARM."
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Skip Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -289,17 +287,6 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 		ndk_ver_name="r29-beta1"
 		is_musl_ndk=true
 		break
-		;;
-  	"Skip")
-		echo "Skiping.."
-		if [ -d "$cmake_dir" ]; then
-			cd "$cmake_dir"
-			run_install_cmake
-		else
-			mkdir -p "$cmake_dir"
-			cd "$cmake_dir"
-			run_install_cmake
-		fi
 		;;
 	"Quit")
 		echo "Exit.."
