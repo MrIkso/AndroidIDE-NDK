@@ -3,6 +3,8 @@
 # Script to install NDK into AndroidIDE
 # Author MrIkso
 
+arch=$(uname -m)
+
 install_dir=$HOME
 sdk_dir=$install_dir/android-sdk
 cmake_dir=$sdk_dir/cmake
@@ -299,8 +301,6 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 		;;
 	esac
 done
-
-arch=$(uname -m)
 
 echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
 cd "$install_dir" || exit
