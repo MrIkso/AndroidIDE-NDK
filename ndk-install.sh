@@ -23,22 +23,95 @@ else
 fi
 
 run_install_cmake() {
-        echo "Select with NDK version you need install?"
+        echo "Select with CMake version you need install?"
+	echo "Notice: Only 3.30.3 and upper supported for ARM."
 	select item in 3.10.2 3.18.1 3.22.1 3.25.1 3.30.3 3.30.4 3.30.5 3.31.0 3.31.1 3.31.4 3.31.5 3.31.6 4.0.2 Quit; do
+ 	case $item in
+		"3.10.2")
+			cmake_ver="3.10.2"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.18.1")
+			cmake_ver="3.18.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.22.1")
+			cmake_ver="3.22.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.25.1")
+			cmake_ver="3.25.1"
+   			is_musl_cmake=false
+			break
+			;;
+		"3.30.3")
+			cmake_ver="3.30.3"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.30.4")
+			cmake_ver="3.30.4"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.30.5")
+			cmake_ver="3.30.5"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.31.0")
+			cmake_ver="3.31.0"
+   			is_musl_cmake=true
+			break
+			;;
+		"3.31.1")
+			cmake_ver="3.31.1"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.4")
+			cmake_ver="3.31.4"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.5")
+			cmake_ver="3.31.5"
+   			is_musl_cmake=true
+			break
+			;;
+	  	"3.31.6")
+			cmake_ver="3.31.6"
+   			is_musl_cmake=true
+			break
+			;;
+		"4.0.2")
+			cmake_ver="4.0.2"
+   			is_musl_cmake=true
+			break
+			;;
+		"Quit")
+			echo "Exit.."
+			exit
+			;;
+		*)
+			echo "Ooops"
+			;;
+		esac
+	done
+
+ 	echo "Selected this version $cmake_ver to install"
+  
+  	if [ -d "$cmake_dir/$cmake_ver" ]; then
+		echo "$cmake_ver exists. Deleting CMake $cmake_ver..."
+		rm -rf "$cmake_dir/$cmake_ver"
+	else
+		echo "NDK does not exists."
+	fi
 	
-	download_cmake  false
-	download_cmake  false
-	download_cmake  false
-	download_cmake  false
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
-	download_cmake  true
+	download_cmake $cmake_ver $is_musl_cmake
 }
 
 download_cmake() {
@@ -144,7 +217,7 @@ installing_cmake() {
 }
 
 echo "Select with NDK version you need install?"
-
+echo "Notice: Only r27c and upper supported for ARM."
 select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-beta1 Quit; do
 	case $item in
 	"r17c")
@@ -229,10 +302,6 @@ done
 
 arch=$(uname -m)
 
-if [[ "$is_musl_ndk" == "false" && "$is_armv7" == "true" ]]; then
-     echo "Only r27c and upper supported for ARM."
-     exit 1
-fi
 echo "Selected this version $ndk_ver_name ($ndk_ver) to install"
 cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
@@ -253,26 +322,6 @@ if [ -d "$ndk_dir" ]; then
 	rm -rf "$ndk_dir"
 else
 	echo "NDK does not exists."
-fi
-
-if [ -d "$cmake_dir/3.10.1" ]; then
-	echo "$cmake_dir/3.10.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.18.1" ]; then
-	echo "$cmake_dir/3.18.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.22.1" ]; then
-	echo "$cmake_dir/3.22.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
-fi
-
-if [ -d "$cmake_dir/3.23.1" ]; then
-	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
-	rm -rf "$cmake_dir"
 fi
 
 if [[ $is_musl_ndk == true ]]; then
