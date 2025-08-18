@@ -159,9 +159,9 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28c r29-be
 		is_musl_ndk=true
 		break
 		;;
-	"r29-beta1")
-		ndk_ver="29.0.13113456"
-		ndk_ver_name="r29-beta1"
+	"r29-beta3")
+		ndk_ver="29.0.13846066"
+		ndk_ver_name="r29-beta3"
 		is_musl_ndk=true
 		break
 		;;
