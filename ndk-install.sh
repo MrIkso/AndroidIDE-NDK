@@ -141,21 +141,21 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 		is_lzhiyong_ndk=true
 		break
 		;;
-  	"r27b")
+	"r27b")
 		ndk_ver="27.1.12297006"
 		ndk_ver_name="r27b"
 		is_lzhiyong_ndk=true
 		break
 		;;
-  	"r27c")
+	"r27c")
 		ndk_ver="27.2.12479018"
 		ndk_ver_name="r27c"
 		is_musl_ndk=true
 		break
 		;;
-  	"r28b")
-		ndk_ver="28.1.13356709"
-		ndk_ver_name="r28b"
+	"r28c")
+		ndk_ver="28.2.13676358"
+		ndk_ver_name="r28c"
 		is_musl_ndk=true
 		break
 		;;
@@ -169,7 +169,7 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28b r29-be
 		echo "Exit.."
 		exit
 		;;
-	*)
+	     *)
 		echo "Ooops"
 		;;
 	esac
