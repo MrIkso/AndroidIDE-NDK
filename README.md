@@ -14,8 +14,8 @@ This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/Andr
 3. After installation, edit or set `ndkVersion` in your `build.gradle` or `build.gradle.kts` file as follows:
 
    - If you choose `r24`, set `ndkVersion` to `"24.0.8215888"`.
-   - If you choose `r28b`, set `ndkVersion` to `"28.1.13356709"`.
-   - If you choose `r29-beta1`, set `ndkVersion` to `"29.0.13113456"`.
+   - If you choose `r28c`, set `ndkVersion` to `"28.2.13676358"`.
+   - If you choose `r29-beta3`, set `ndkVersion` to `"29.0.13846066"`.
 
 
 You can find the downloaded ndk version names by running:
@@ -35,7 +35,7 @@ plugins {
 android {
     compileSdk 33
     buildToolsVersion "33.0.0"
-    ndkVersion "28.1.13356709"
+    ndkVersion "28.2.13676358"
 
     defaultConfig {
         applicationId "com.myapplication"
