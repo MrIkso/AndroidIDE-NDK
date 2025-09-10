@@ -15,7 +15,7 @@ ndk_file_name=""
 ndk_installed=false
 cmake_installed=false
 is_lzhiyong_ndk=false
-is_musl_ndk=false
+is_bionic_ndk=false
 
 run_install_cmake() {
 	download_cmake 3.10.2
@@ -58,7 +58,7 @@ fix_ndk() {
 	fi
 }
 
-fix_ndk_musl() {
+fix_ndk_bionic() {
 	# create missing link
 	if [ -d "$ndk_dir" ]; then
 		echo "Creating missing links..."
@@ -67,7 +67,7 @@ fix_ndk_musl() {
 		cd "$ndk_dir"/prebuilt || exit
 		ln -s linux-arm64 linux-aarch64
   		cd "$ndk_dir"/shader-tools || exit
-    		ln -s linux-arm64 linux-aarch64 
+  		ln -s linux-arm64 linux-aarch64 
 		ndk_installed=true
 	else
 		echo "NDK does not exists."
@@ -147,22 +147,22 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28c r29-be
 		is_lzhiyong_ndk=true
 		break
 		;;
-	"r27c")
-		ndk_ver="27.2.12479018"
-		ndk_ver_name="r27c"
-		is_musl_ndk=true
+	"r27d")
+		ndk_ver="27.3.13750724"
+		ndk_ver_name="r27d"
+		is_bionic_ndk=true
 		break
 		;;
 	"r28c")
 		ndk_ver="28.2.13676358"
 		ndk_ver_name="r28c"
-		is_musl_ndk=true
+		is_bionic_ndk=true
 		break
 		;;
-	"r29-beta3")
-		ndk_ver="29.0.13846066"
-		ndk_ver_name="r29-beta3"
-		is_musl_ndk=true
+	"r29-beta4")
+		ndk_ver="29.0.14033849"
+		ndk_ver_name="r29-beta4"
+		is_bionic_ndk=true
 		break
 		;;
 	"Quit")
@@ -181,8 +181,8 @@ cd "$install_dir" || exit
 # checking if previous installed NDK and cmake
 
 ndk_dir="$ndk_base_dir/$ndk_ver"
-if [[ $is_musl_ndk == true ]]; then
-	ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-musl.tar.xz"
+if [[ $is_bionic_ndk == true ]]; then
+	ndk_file_name="android-ndk-$ndk_ver_name-aarch64-linux-android.tar.xz"
 else
 	ndk_file_name="android-ndk-$ndk_ver_name-aarch64.zip"
 fi
@@ -214,7 +214,7 @@ if [ -d "$cmake_dir/3.23.1" ]; then
 	rm -rf "$cmake_dir"
 fi
 
-if [[ $is_musl_ndk == true ]]; then
+if [[ $is_bionic_ndk == true ]]; then
 	download_ndk "$ndk_file_name" "https://github.com/HomuHomu833/android-ndk-custom/releases/download/$ndk_ver_name/$ndk_file_name"
 elif [[ $is_lzhiyong_ndk == true ]]; then
 	download_ndk "$ndk_file_name" "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/ndk/$ndk_file_name"
@@ -224,7 +224,7 @@ fi
 
 if [ -f "$ndk_file_name" ]; then
 	echo "Unziping NDK $ndk_ver_name..."
-	if [[ $is_musl_ndk == true ]]; then
+	if [[ $is_bionic_ndk == true ]]; then
 		tar --no-same-owner -xf "$ndk_file_name" --warning=no-unknown-keyword
 	else
 		unzip -qq "$ndk_file_name"
@@ -240,8 +240,8 @@ if [ -f "$ndk_file_name" ]; then
 		mv android-ndk-$ndk_ver_name "$ndk_dir"
 	fi
 
-	if [[ $is_musl_ndk == true ]]; then
-    		fix_ndk_musl
+	if [[ $is_bionic_ndk == true ]]; then
+    		fix_ndk_bionic
 	elif [[ $is_lzhiyong_ndk == false ]]; then
     		fix_ndk
 	else
