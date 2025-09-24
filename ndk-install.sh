@@ -93,7 +93,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28c r29-beta1 Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27d r28c r29-beta4 Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -194,8 +194,8 @@ else
 	echo "NDK does not exists."
 fi
 
-if [ -d "$cmake_dir/3.10.1" ]; then
-	echo "$cmake_dir/3.10.1 exists. Deleting cmake..."
+if [ -d "$cmake_dir/3.10.2" ]; then
+	echo "$cmake_dir/3.10.2 exists. Deleting cmake..."
 	rm -rf "$cmake_dir"
 fi
 
@@ -209,13 +209,28 @@ if [ -d "$cmake_dir/3.22.1" ]; then
 	rm -rf "$cmake_dir"
 fi
 
-if [ -d "$cmake_dir/3.23.1" ]; then
-	echo "$cmake_dir/3.23.1 exists. Deleting cmake..."
+if [ -d "$cmake_dir/3.25.1" ]; then
+	echo "$cmake_dir/3.25.1 exists. Deleting cmake..."
 	rm -rf "$cmake_dir"
 fi
 
 if [[ $is_bionic_ndk == true ]]; then
-	download_ndk "$ndk_file_name" "https://github.com/HomuHomu833/android-ndk-custom/releases/download/$ndk_ver_name/$ndk_file_name"
+    tag_name=""
+    case $ndk_ver_name in
+        "r27d")
+            tag_name="r27"
+            ;;
+        "r28c")
+            tag_name="r28"
+            ;;
+        "r29-beta4")
+            tag_name="r29"
+            ;;
+        *)
+            tag_name=$ndk_ver_name
+            ;;
+    esac
+    download_ndk "$ndk_file_name" "https://github.com/HomuHomu833/android-ndk-custom/releases/download/$tag_name/$ndk_file_name"
 elif [[ $is_lzhiyong_ndk == true ]]; then
 	download_ndk "$ndk_file_name" "https://github.com/MrIkso/AndroidIDE-NDK/releases/download/ndk/$ndk_file_name"
 else
