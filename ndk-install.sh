@@ -155,7 +155,7 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27c r28c r29-be
 		;;
 	"r28c")
 		ndk_ver="28.2.13676358"
-		ndk_ver_name="r28c"
+		ndk_ver_name="r28"
 		is_bionic_ndk=true
 		break
 		;;
