@@ -93,7 +93,7 @@ installing_cmake() {
 
 echo "Select with NDK version you need install?"
 
-select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27d r28c r29-beta4 Quit; do
+select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27d r28c r29 Quit; do
 	case $item in
 	"r17c")
 		ndk_ver="17.2.4988734"
@@ -159,9 +159,9 @@ select item in r17c r18b r19c r20b r21e r22b r23b r24 r26b r27b r27d r28c r29-be
 		is_bionic_ndk=true
 		break
 		;;
-	"r29-beta4")
-		ndk_ver="29.0.14033849"
-		ndk_ver_name="r29-beta4"
+	"r29")
+		ndk_ver="29.0.14206865"
+		ndk_ver_name="r29"
 		is_bionic_ndk=true
 		break
 		;;
@@ -223,9 +223,9 @@ if [[ $is_bionic_ndk == true ]]; then
         "r28c")
             tag_name="r28"
             ;;
-        "r29-beta4")
-            tag_name="r29"
-            ;;
+        #"r29")
+        #    tag_name="r29"
+        #    ;;
         *)
             tag_name=$ndk_ver_name
             ;;
