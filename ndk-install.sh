@@ -6,10 +6,25 @@ IFS=$'\n\t'
 # Author MrIkso
 
 # -------- Helpers --------
-log() { echo "[INFO] $*"; }
-err() { echo "[ERROR] $*" >&2; }
+# Colors
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+MAGENTA="\033[35m"
+CYAN="\033[36m"
+RESET="\033[0m"
+
+log() {
+  echo -e "${GREEN}[INFO]${RESET} $*"
+}
+
+err() {
+  echo -e "\n${RED}[ERROR]${RESET} $*\n" >&2
+}
+
 die() {
-  err "$*"
+  echo -e "\n${RED}[CRITICAL ERROR]${RESET} $*\n${RED}[CRITICAL ERROR]${RESET} Script failed.\n" >&2
   exit 1
 }
 
@@ -47,7 +62,11 @@ case "$PLATFORM" in
 esac
 
 DEST_NDK_DIR="${SDK_DIR}/ndk"
-WORKDIR="$(mktemp -d /tmp/ndk-install.XXXXXX)"
+
+# This requires to setup temporary directory , setup it to use it.
+# Using without adding tmp directory will cause
+# Error : "mktemp: failed to create directory via template ‘/tmp/ndk-install.XXXXXX’: No such file or directory"
+# WORKDIR="$(mktemp -d /tmp/ndk-install.XXXXXX)" # Create tmp directory to store downloaded ndk then move to target location.
 
 # Define subdirectories and ensure they exist
 CMAKE_DIR="${SDK_DIR}/cmake"
@@ -56,9 +75,9 @@ NDK_BASE_DIR="${SDK_DIR}/ndk"
 mkdir -p "$CMAKE_DIR"
 mkdir -p "$NDK_BASE_DIR"
 
-echo "Using SDK directory: $SDK_DIR"
-echo "CMake directory: $CMAKE_DIR"
-echo "NDK directory: $NDK_BASE_DIR"
+log "Using SDK directory: $SDK_DIR"
+log "CMake directory: $CMAKE_DIR"
+log "NDK directory: $NDK_BASE_DIR"
 
 ndk_dir=""
 ndk_ver=""
@@ -81,14 +100,15 @@ ARIA2_OPTS=(
   --console-log-level=warn
 )
 
-cleanup() {
-  if [ -d "$WORKDIR" ]; then
-    rm -rf "$WORKDIR" || true
-  fi
-}
-trap cleanup EXIT
+# This Code requires setup , currently in developmet.
 
-# Extend from here.
+# Requires setup of WORKDIR
+# cleanup() {
+#   if [ -d "$WORKDIR" ]; then
+#     rm -rf "$WORKDIR" || true
+#   fi
+# }
+# trap cleanup EXIT
 
 # usage() {
 #   cat <<EOF
@@ -273,13 +293,17 @@ download_ndk() {
   local url="$2"
 
   log "Downloading NDK $file..."
+
+  log "Checking storage available...\n"
   df -h "$INSTALL_DIR"
+  echo -e "\n"
+
   download_with_fallback "$file" "$url"
 }
 
 fix_ndk() {
   # create missing link
-  # Use ln -sf , this overrides already available links if it exists..
+  # Use ln -sf , this overrides already available links if it exists.
   if [ -d "$ndk_dir" ]; then
     log "Creating missing links..."
     cd "$ndk_dir/toolchains/llvm/prebuilt" || exit
@@ -339,7 +363,7 @@ installing_cmake() {
 
     cmake_installed=true
   else
-    err "$cmake_file does not exists."
+    err "$cmake_file does not exist."
   fi
 }
 
@@ -519,7 +543,7 @@ if [ -f "$ndk_file_name" ]; then
   fi
 
 else
-  die "$ndk_file_name does not exists."
+  die "$ndk_file_name does not exist."
 fi
 
 if [ -d "$CMAKE_DIR" ]; then
@@ -534,5 +558,5 @@ fi
 if [[ $ndk_installed == true && $cmake_installed == true ]]; then
   log 'Installation Finished. NDK has been installed successfully, please restart AndroidIDE!'
 else
-  log 'NDK and cmake failed to install! Try Again'
+  err 'NDK and cmake failed to install! Try Again'
 fi
