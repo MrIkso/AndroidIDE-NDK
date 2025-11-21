@@ -2,7 +2,7 @@
 
 This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app).
 
-### How to install Ndk to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app)
+### How to install NDK to [AndroidIDE](https://github.com/itsaky/AndroidIDE) and [Termux](https://github.com/termux/termux-app)
 
 1. Download the NDK installation script:
 
@@ -19,7 +19,65 @@ This bash script will install NDK to [AndroidIDE](https://github.com/itsaky/Andr
    - If you choose `r28c`, set `ndkVersion` to `"28.2.13676358"`.
    - If you choose `r29`, set `ndkVersion` to `"29.0.14206865"`.
 
-You can find the downloaded ndk version names by running:
+## Usage
+
+### Warning
+
+NDK versions installed from the provided URLs are for **aarch64 architecture only**. The script validates your platform and will exit on unsupported architectures. Use `--arch` to override for testing purposes.
+
+```bash
+./ndk-install.sh [OPTIONS] [NDK_VERSION]
+```
+
+**Options:**
+
+- `--yes`         : Automatically agree to all prompts for non-interactive installation.
+- `--url <NDK_URL>`    : Install NDK from a custom URL.
+- `--arch <ARCH>`     : Override default architecture (e.g., arm64, x86).
+- `--help`         : Show this message.
+
+**NDK Versions Available**:
+r17c, r18b, r19c, r20b, r21e, r22b, r23b, r24, r26b, r27b, r27d, r28c, r29
+
+**Examples:**
+
+Interactive mode:
+
+```bash
+./ndk-install.sh
+```
+
+Install specific version:
+
+```bash
+./ndk-install.sh r29
+```
+
+Non-interactive installation:
+
+```bash
+./ndk-install.sh --yes r28c
+```
+
+Custom NDK URL:
+
+```bash
+./ndk-install.sh --url "https://example.com/android-ndk.tar.xz"
+```
+
+Using environment variables:
+
+```bash
+NDK_VERSION=r29 ./ndk-install.sh --yes
+```
+
+Architecture override (for testing):
+
+```bash
+./ndk-install.sh --arch Linux-x86_64 r27b
+```
+
+You can find the downloaded NDK version names by running:
 
 ```bash
 ls $HOME/android-sdk/ndk
@@ -71,7 +129,7 @@ dependencies {
 }
 ```
 
-Special Thanks to:
+Thanks to:
 
 - [x] [jzinferno](https://github.com/jzinferno/termux-ndk)
 - [x] [lzhiyong](https://github.com/lzhiyong/termux-ndk)
